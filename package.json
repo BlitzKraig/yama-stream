@@ -1,6 +1,6 @@
 {
   "name": "yama-stream",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Youtube and MP3 Audio Streamer, based on youtube-audio. Currently only supports Youtube.",
   "main": "index.js",
   "scripts": {

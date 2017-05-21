@@ -1,5 +1,5 @@
 const yama = require('./')
-const url = 'http://youtube.com/watch?v=2JVwo3D72cc'
+const url = 'http://youtube.com/watch?v=BJ0xBCwkg3E'
 const decoder = require('lame').Decoder
 const speaker = require('speaker')
 

@@ -70,13 +70,15 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, opt) {
         .seekInput(startTime())
         .duration(getDuration())
         .noVideo()
-        .audioBitrate(bitrate())
+	.audioQuality(8)
+	.audioChannels(1)
         .renice(-20);
     }else{
         var ffmpeg = new FFmpeg(video)
         .noVideo()
         .duration(getDuration())
-        .audioBitrate(bitrate())
+	.audioQuality(8)
+	.audioChannels(1)
         .renice(-20);
     }
 
