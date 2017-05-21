@@ -4,9 +4,9 @@ var through = require('through2');
 var xtend = require('xtend');
 var fs = require('fs');
 
-var defaultAudioBitrate = 128;
-var minAudioBitrate = 8;
-var maxAudioBitrate = 256;
+var defaultAudioBitrate = 5;
+var minAudioBitrate = 0;
+var maxAudioBitrate = 9;
 
 function streamify(uri, timestampstart, audioduration, audioBitrate, opt) {
     opt = xtend({
@@ -70,14 +70,14 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, opt) {
         .seekInput(startTime())
         .duration(getDuration())
         .noVideo()
-	.audioQuality(8)
+	.audioQuality(bitrate())
 	.audioChannels(1)
         .renice(-20);
     }else{
         var ffmpeg = new FFmpeg(video)
         .noVideo()
         .duration(getDuration())
-	.audioQuality(8)
+	.audioQuality(bitrate())
 	.audioChannels(1)
         .renice(-20);
     }
