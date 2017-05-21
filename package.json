@@ -1,0 +1,23 @@
+{
+  "name": "yama-stream",
+  "version": "1.0.0",
+  "description": "Youtube and MP3 Audio Streamer, based on youtube-audio. Currently only supports Youtube.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "youtube",
+    "audio",
+    "stream"
+  ],
+  "author": "Blitzkraig",
+  "license": "ISC",
+  "dependencies": {
+    "fluent-ffmpeg": "^2.1.2",
+    "fs": "0.0.1-security",
+    "through2": "^2.0.3",
+    "xtend": "^4.0.1",
+    "ytdl-core": "^0.14.1"
+  }
+}
