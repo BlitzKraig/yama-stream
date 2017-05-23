@@ -3,7 +3,7 @@ const url = 'aud:./TestSounds/mpthreetest.mp3'
 const decoder = require('lame').Decoder
 const speaker = require('speaker')
 
-// URL of youtube video, 
+// Local File location, 
 // time to begin from (nullable),
 // desired duration (nullable), 
 // desired bitrate (nullable)

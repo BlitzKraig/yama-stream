@@ -7,6 +7,7 @@ const speaker = require('speaker')
 // time to begin from (nullable),
 // desired duration (nullable), 
 // desired bitrate (nullable)
-yama(url, "0:10", 10, 5)
-    .pipe(decoder())
-    .pipe(speaker())
+
+yama(url, "0:10", 20, 4)
+.pipe(decoder())
+.pipe(speaker())
