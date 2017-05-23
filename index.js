@@ -8,6 +8,8 @@ var defaultAudioBitrate = 5;
 var minAudioBitrate = 0;
 var maxAudioBitrate = 9;
 
+var isYT = false;
+
 function streamify(uri, timestampstart, audioduration, audioBitrate, opt) {
     opt = xtend({
         audioBitrate: audioBitrate,
@@ -19,7 +21,10 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, opt) {
         applyOptions: function () {}
     }, opt);
 
-    var video = ytdl(uri, {filter: opt.filter, quality: opt.quality});
+
+    var audio;
+
+
 
     function startTime() {
         if (opt.startTime != null) {
@@ -33,7 +38,7 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, opt) {
             return null;
         }
     }
-    
+
     function getDuration() {
         if(opt.duration != null){
             if(opt.duration > 0){
@@ -45,7 +50,7 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, opt) {
             return 9999999999;
         }
     }
-    
+
     function bitrate() {
         if (opt.audioBitrate != null) {
             console.log("Submitted bitrate: " + opt.audioBitrate);
@@ -60,25 +65,37 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, opt) {
         }
     }
 
+
+
+    if(uri.lastIndexOf("aud:", 0) === 0){
+        //This is a wav request
+        audio = uri.substring(4);
+
+    }else{
+        isYT = true;
+        audio = ytdl(uri, {filter: opt.filter, quality: opt.quality});
+    }
+
+
     var stream = opt.file
     ? fs.createWriteStream(opt.file)
     : through();
 
     //Hacky horrid fix for no starttime...
     if(startTime() != null){
-        var ffmpeg = new FFmpeg(video)
+        var ffmpeg = new FFmpeg(audio)
         .seekInput(startTime())
         .duration(getDuration())
         .noVideo()
-	.audioQuality(bitrate())
-	.audioChannels(1)
+        .audioQuality(bitrate())
+        .audioChannels(1)
         .renice(-20);
     }else{
-        var ffmpeg = new FFmpeg(video)
+        var ffmpeg = new FFmpeg(audio)
         .noVideo()
         .duration(getDuration())
-	.audioQuality(bitrate())
-	.audioChannels(1)
+        .audioQuality(bitrate())
+        .audioChannels(1)
         .renice(-20);
     }
 
@@ -86,10 +103,13 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, opt) {
     var output = ffmpeg
     .format(opt.audioFormat)
     .pipe(stream);
-
-    output.on('error', video.end.bind(video));
+    if(isYT){
+        output.on('error', audio.end.bind(audio));
+    }
     output.on('error', stream.emit.bind(stream, 'error'));
     return stream;
+
+
 }
 
 module.exports = streamify;
