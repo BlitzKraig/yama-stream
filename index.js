@@ -114,7 +114,7 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, format, aud
         ffmpeg.duration(getDuration());
     }
     if(getFormat() == "s16le"){
-        ffmpeg.audioFrequency(5000 * getChannels());
+        ffmpeg.audioFrequency(100000 / getChannels());
     }
         ffmpeg.noVideo();
         ffmpeg.audioQuality(bitrate());
