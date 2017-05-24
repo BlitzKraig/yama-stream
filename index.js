@@ -26,6 +26,8 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, format, aud
 
 
     var audio;
+    
+    isYT = false;
 
 
 
