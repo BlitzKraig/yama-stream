@@ -106,22 +106,21 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, format, aud
     : through();
 
     //Hacky horrid fix for no starttime... Setting to 0 causes timing issues
+    var ffmpeg = new FFmpeg(audio)
     if(startTime() != null){
-        var ffmpeg = new FFmpeg(audio)
-        .seekInput(startTime())
-        .duration(getDuration())
-        .noVideo()
-        .audioQuality(bitrate())
-        .audioChannels(getChannels())
-        .renice(-20);
-    }else{
-        var ffmpeg = new FFmpeg(audio)
-        .noVideo()
-        .duration(getDuration())
-        .audioQuality(bitrate())
-        .audioChannels(getChannels())
-        .renice(-20);
+        ffmpeg.seekInput(startTime());
     }
+    if(getDuration() != null){
+        ffmpeg.duration(getDuration());
+    }
+    if(getFormat() == "s16le"){
+        ffmpeg.audioFrequency(5000 * getChannels());
+    }
+        ffmpeg.noVideo();
+        ffmpeg.audioQuality(bitrate());
+        ffmpeg.audioChannels(getChannels());
+        ffmpeg.renice(-20);
+    
 
     opt.applyOptions(ffmpeg);
     var output = ffmpeg
