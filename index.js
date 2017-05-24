@@ -8,14 +8,16 @@ var defaultAudioBitrate = 5;
 var minAudioBitrate = 0;
 var maxAudioBitrate = 9;
 
+var defaultFormat = "mp3";
+
 var isYT = false;
 
-function streamify(uri, timestampstart, audioduration, audioBitrate, opt) {
+function streamify(uri, timestampstart, audioduration, audioBitrate, format, opt) {
     opt = xtend({
         audioBitrate: audioBitrate,
         filter: 'audioonly',
         quality: 'lowest',
-        audioFormat: 'mp3',
+        audioFormat: format,
         startTime: timestampstart,
         duration: audioduration,
         applyOptions: function () {}
@@ -65,10 +67,18 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, opt) {
         }
     }
 
+    function getFormat() {
+        if(opt.audioFormat != null){
+            return opt.audioFormat;
+        }else{
+            return defaultFormat;
+        }
+    }
+
 
 
     if(uri.lastIndexOf("aud:", 0) === 0){
-        //This is a wav request
+        //This is an audio file request
         audio = uri.substring(4);
 
     }else{
@@ -81,7 +91,7 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, opt) {
     ? fs.createWriteStream(opt.file)
     : through();
 
-    //Hacky horrid fix for no starttime...
+    //Hacky horrid fix for no starttime... Setting to 0 causes timing issues
     if(startTime() != null){
         var ffmpeg = new FFmpeg(audio)
         .seekInput(startTime())
@@ -101,7 +111,7 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, opt) {
 
     opt.applyOptions(ffmpeg);
     var output = ffmpeg
-    .format(opt.audioFormat)
+    .format(getFormat())
     .pipe(stream);
     if(isYT){
         output.on('error', audio.end.bind(audio));
