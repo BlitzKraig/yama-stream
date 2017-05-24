@@ -46,10 +46,10 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, format, opt
             if(opt.duration > 0){
                 return opt.duration;
             }else{
-                return Number.MAX_SAFE_INTEGER;
+                return 99999999999;
             }
         }else{
-            return Number.MAX_SAFE_INTEGER;
+            return 99999999999;
         }
     }
 
