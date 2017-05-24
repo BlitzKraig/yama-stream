@@ -7,7 +7,9 @@ const speaker = require('speaker')
 // time to begin from (nullable),
 // desired duration (nullable), 
 // desired bitrate (nullable)
+// desired format
+// channel count (nullable)
 
-yama(url, "0:10", 20, 4)
+yama(url, "0:10", 20, 4, "mp3", 2)
 .pipe(decoder())
 .pipe(speaker())

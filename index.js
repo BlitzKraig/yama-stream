@@ -12,7 +12,7 @@ var defaultFormat = "mp3";
 
 var isYT = false;
 
-function streamify(uri, timestampstart, audioduration, audioBitrate, format, opt) {
+function streamify(uri, timestampstart, audioduration, audioBitrate, format, audiochannels, opt) {
     opt = xtend({
         audioBitrate: audioBitrate,
         filter: 'audioonly',
@@ -20,6 +20,7 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, format, opt
         audioFormat: format,
         startTime: timestampstart,
         duration: audioduration,
+        channels: audiochannels,
         applyOptions: function () {}
     }, opt);
 
@@ -50,6 +51,19 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, format, opt
             }
         }else{
             return 99999999999;
+        }
+    }
+    
+    function getChannels() {
+        if(opt.channels != null){
+            if(opt.channels >= 1 && opt.channels <= 2){
+                // Only allowing mono/stereo, should maybe make this a bool
+                return opt.channels;
+            }else{
+                return 1;
+            }
+        }else{
+            return 1;
         }
     }
 
@@ -98,14 +112,14 @@ function streamify(uri, timestampstart, audioduration, audioBitrate, format, opt
         .duration(getDuration())
         .noVideo()
         .audioQuality(bitrate())
-        .audioChannels(1)
+        .audioChannels(getChannels())
         .renice(-20);
     }else{
         var ffmpeg = new FFmpeg(audio)
         .noVideo()
         .duration(getDuration())
         .audioQuality(bitrate())
-        .audioChannels(1)
+        .audioChannels(getChannels())
         .renice(-20);
     }
 
