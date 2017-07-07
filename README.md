@@ -1,3 +1,6 @@
+# This project is no longer under active development
+A new & improved version built from the ground up will be linked here soon.
+
 # yama-stream
 
 Youtube & MP3 Audio Streamer, created for use with my Discord bot.
