@@ -1,5 +1,4 @@
-# This project is no longer under active development
-A new & improved version built from the ground up will be linked here soon.
+# This project is no longer under development
 
 # yama-stream
 
